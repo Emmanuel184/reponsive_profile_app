@@ -6,11 +6,13 @@ const dotenv = require("dotenv");
 const multer = require("multer");
 const helmet = require("helmet")
 const morgan = require("morgan");
+const verifyToken = require("./middleware/auth");
 const path = require("path");
 const { register } = require("./controllers/auth");
+const { createPost } = require("./controllers/posts");
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/users");
-// const { fileURLToPath } = require("url");
+const postRouter = require("./routes/posts");
 
 dotenv.config();
 const app = express();
@@ -40,20 +42,15 @@ const storage = multer.diskStorage({
 
 const upload = multer(storage);
 
-// const test = (req, res) => {
-//     console.log(req.params);
-//     const { id, friendId } = req.params;
-//     console.log({ msg: `id: ${id} friendId: ${friendId}` });
-//     // res.json({ msg: `id: ${id} friendId: ${frienId}` });
-//     res.json(req.params)
-// }
 
 /* Routes */
 app.post("/api/v1/auth/register", upload.single("picture"), register);
+app.post("/api/v1/posts", verifyToken, upload.single("picture"), createPost);
+
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
-// app.get("/users/:id/:friendId", test);
+app.use("/api/v1/posts", postRouter);
 
 
 /* Mongoose setup */
@@ -67,6 +64,8 @@ mongoose.connect(process.env.MONGO_URI, {
     useunifiedtopology: true
 }).then(() => {
     app.listen(port, () => console.log(`Listening on port ${port}`))
+
+
 }).catch((error) => console.log(`${error} did not connect`))
 
 

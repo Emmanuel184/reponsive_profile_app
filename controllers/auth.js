@@ -34,18 +34,12 @@ const login = async (req, res) => {
         }
 
 
-        console.log(typeof (password));
-        console.log(typeof (user.password));
-        console.log(password === user.password);
-
-        const isMatch = bcrypt.compare(password, user.password);
+        const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
             console.log(isMatch);
             return res.status(400).json({ msg: `Invalid credentials` });
         }
-
-
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
         delete user.password;

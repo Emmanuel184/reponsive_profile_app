@@ -18,6 +18,8 @@ const verifyToken = async (req, res, next) => {
 
         }
 
+        
+
         token = token.split(" ")[1];
 
         const verify = jwt.verify(token, process.env.JWT_SECRET);
@@ -30,7 +32,6 @@ const verifyToken = async (req, res, next) => {
         next();
 
     } catch (error) {
-        
         res.status(500).json({ msg: error.message })
     }
 }
