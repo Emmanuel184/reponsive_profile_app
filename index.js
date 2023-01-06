@@ -7,6 +7,7 @@ const multer = require("multer");
 const helmet = require("helmet")
 const morgan = require("morgan");
 const path = require("path");
+const authRouter = require("./routes/auth");
 // const { fileURLToPath } = require("url");
 
 dotenv.config();
@@ -22,6 +23,7 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
+
 /* FILE STORAGE */
 
 const storage = multer.diskStorage({
@@ -36,7 +38,8 @@ const storage = multer.diskStorage({
 const upload = multer(storage);
 
 /* Routes */
-app.post("/auth/register", upload.single("picture"), register);
+app.use("/api/v1/auth", authRouter)
+// app.post("/auth/register", upload.single("picture"), register);
 
 
 /* Mongoose setup */
