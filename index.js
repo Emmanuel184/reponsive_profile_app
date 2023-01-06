@@ -7,6 +7,7 @@ const multer = require("multer");
 const helmet = require("helmet")
 const morgan = require("morgan");
 const path = require("path");
+const { register } = require("./controllers/auth");
 const authRouter = require("./routes/auth");
 // const { fileURLToPath } = require("url");
 
@@ -38,14 +39,15 @@ const storage = multer.diskStorage({
 const upload = multer(storage);
 
 /* Routes */
-app.use("/api/v1/auth", authRouter)
-// app.post("/auth/register", upload.single("picture"), register);
+app.post("/api/v1/auth/register", upload.single("picture"), register);
+
+app.use("/api/v1/auth", authRouter);
 
 
 /* Mongoose setup */
 const port = process.env.PORT;
 
-console.log(port);
+console.log(`try 1`);
 
 mongoose.set("strictQuery", false);
 mongoose.connect(process.env.MONGO_URI, {
