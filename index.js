@@ -44,13 +44,13 @@ const upload = multer(storage);
 
 
 /* Routes */
-app.post("/api/v1/auth/register", upload.single("picture"), register);
-app.post("/api/v1/posts", verifyToken, upload.single("picture"), createPost);
+app.post("/auth/register", upload.single("picture"), register);
+app.post("/posts", verifyToken, upload.single("picture"), createPost);
 
 
-app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/users", userRouter);
-app.use("/api/v1/posts", postRouter);
+app.use("/auth", authRouter);
+app.use("/users", userRouter);
+app.use("/posts", postRouter);
 
 
 /* Mongoose setup */

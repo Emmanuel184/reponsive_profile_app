@@ -51,12 +51,16 @@ const addRemoveFriend = async (req, res) => {
     try {
         const { id, friendId } = req.params;
 
-        console.log(`id: ${id} frienId:${friendId}`);
 
         const user = await User.findById(id);
         const friend = await User.findById(friendId);
 
-        console.log(`user: ${user.firstName} friend: ${friend.firstName}`);
+        console.log("please", friend);
+        console.log(user);  
+
+
+        console.log(`\n\n\n\n\n\nBefore-------------------------------------------\nuser: ${id},\nuser's friends,\n${user.friends}\n-----------------------------------------\nfriend: ${friendId},\nfriends,\n${friend.friends}`);
+
 
         if (user.friends.includes(friendId)) {
             user.friends = user.friends.filter((id) => id !== friendId);
@@ -65,6 +69,8 @@ const addRemoveFriend = async (req, res) => {
             user.friends.push(friendId);
             friend.friends.push(id);
         }
+
+        console.log(`\n\n\n\n\n\nAfter-------------------------------------------\nuser: ${id},\nuser's friends,\n${user.friends}\n-----------------------------------------\nfriend: ${friendId},\nfriends,\n${friend.friends}`);
 
         await user.save();
         await friend.save();
